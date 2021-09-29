@@ -1,7 +1,7 @@
-package com.finicity.hr.emp;
+package com.finicity.hr.emp.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.finicity.hr.emp.api.EmployeeControllerHateos;
+
 import com.finicity.hr.emp.model.Employee;
 import com.finicity.hr.emp.service.EmployeeService;
 import com.finicity.hr.emp.utils.EmployeeModelAssembler;
@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,14 +43,15 @@ public class EmployeeControllerHateosTest {
 
     @Autowired private ObjectMapper mapper;
 
+    private final Employee emp = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
+                .phone("12345678").address("994 E South Union").role("HR").build();
+    private final Employee emp2 = Employee.builder().id(2).firstName("Brian").lastName("Kobe").shortId("bkobe").email("test@gmail.com")
+            .phone("12345678").address("994 E South Union").role("Software Engineer").build();
+
     @Test
     public void testGetAllEmployees() throws Exception{
         when(employeeService.getAllEmployees()).thenReturn(Stream.of(
-                Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                        .phone("12345678").address("994 E South Union").role("HR").build(),
-                Employee.builder().id(2).firstName("Brian").lastName("Kobe").shortId("bkobe").email("test@gmail.com")
-                        .phone("12345678").address("994 E South Union").role("Software Engineer").build())
-                .collect(Collectors.toList()));
+                emp, emp2).collect(Collectors.toList()));
 
         mockMvc.perform(get("/employees").accept(MediaTypes.HAL_JSON_VALUE))
                 .andDo(print())
@@ -77,14 +79,11 @@ public class EmployeeControllerHateosTest {
     @Test
     public void testAddEmployeesSuccess() throws Exception{
 
-        Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                .phone("12345678").address("994 E South Union").role("Software Engineer").build();
-
-        when(employeeService.saveUpdateEmployee(any())).thenReturn(employee);
+        when(employeeService.saveUpdateEmployee(any())).thenReturn(emp);
 
           mockMvc.perform(
                         post("/employees")
-                                .content(mapper.writeValueAsBytes(employee))
+                                .content(mapper.writeValueAsBytes(emp))
                                 .contentType(MediaTypes.HAL_JSON_VALUE))
                   .andDo(print())
                   .andExpect(status().isCreated())
@@ -93,7 +92,7 @@ public class EmployeeControllerHateosTest {
                   .andExpect(jsonPath("$.firstName", is("Test")))
                   .andExpect(jsonPath("$.lastName", is("Test")))
                   .andExpect(jsonPath("$.email", is("abc@gmail.com")))
-                  .andExpect(jsonPath("$.email", is("abc@gmail.com")))
+                  .andExpect(jsonPath("$.role", is("HR")))
                   .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees/1")))
                   .andExpect(jsonPath("$._links.employees.href", is("http://localhost/employees")))
                   .andReturn();
@@ -102,10 +101,7 @@ public class EmployeeControllerHateosTest {
     @Test
     public void testAddEmployeesFailure() throws Exception {
 
-        Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                .phone("12345678").address("994 E South Union").role("Software Engineer").build();
-
-        when(employeeService.saveUpdateEmployee(any())).thenReturn(employee);
+        when(employeeService.saveUpdateEmployee(any())).thenReturn(emp);
 
         mockMvc.perform(
                 post("/employees")
@@ -114,6 +110,14 @@ public class EmployeeControllerHateosTest {
                 .andDo(print())
                 .andExpect(status().isInternalServerError())
                 .andReturn();
+    }
+
+    @Test
+    public void deleteEmployeeById() throws Exception {
+        doNothing().when(employeeService).deleteEmployee(1);
+        mockMvc.perform(
+                delete("/employees/{id}", "1"))
+                .andExpect(status().isNoContent());
     }
 
 }

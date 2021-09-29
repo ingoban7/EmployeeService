@@ -1,4 +1,4 @@
-package com.finicity.hr.emp;
+package com.finicity.hr.emp.api;
 
 import com.finicity.hr.emp.model.Employee;
 import com.finicity.hr.emp.service.EmployeeService;
@@ -33,11 +33,12 @@ public class EmployeeControllerTest {
     @MockBean
     private EmployeeService employeeService;
 
+    private final Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
+            .phone("12345678").address("994 E South Union").role("HR").build();
+
     @Test
     public void testAddEmployee(){
         log.info("In testAddEmployee Controller");
-        Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                .phone("12345678").address("994 E South Union").role("Software Engineer").build();
 
         when(employeeService.saveUpdateEmployee(any())).thenReturn(employee);
 
@@ -52,8 +53,6 @@ public class EmployeeControllerTest {
     @Test
     public void testAddEmployeeFailure(){
         log.info("In testAddEmployee Failure Controller");
-        Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                .phone("12345678").address("994 E South Union").role("Software Engineer").build();
 
         when(employeeService.saveUpdateEmployee(any())).thenReturn(null);
 

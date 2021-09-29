@@ -1,4 +1,4 @@
-package com.finicity.hr.emp;
+package com.finicity.hr.emp.repository;
 
 import com.finicity.hr.emp.model.Employee;
 import com.finicity.hr.emp.repository.EmployeeRepository;
