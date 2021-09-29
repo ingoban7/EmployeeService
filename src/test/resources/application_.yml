@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driverClassName: org.h2.Driver
+    password: root
+    url: jdbc:h2:mem:empdb
+    username: root
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      use-new-id-generator-mappings: false

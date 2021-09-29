@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS Employee;
+
+CREATE TABLE Employee (
+  id INT AUTO_INCREMENT  PRIMARY KEY,
+  first_name VARCHAR(250) NOT NULL,
+  last_name VARCHAR(250) NOT NULL,
+  short_id VARCHAR(50) NOT NULL,
+  email VARCHAR(250) NOT NULL,
+  phone VARCHAR(250) NULL,
+  address VARCHAR(500) NOT NULL
+);
