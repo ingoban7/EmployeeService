@@ -37,7 +37,7 @@ public class EmployeeControllerTest {
     public void testAddEmployee(){
         log.info("In testAddEmployee Controller");
         Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                .phone("12345678").address("994 E South Union").build();
+                .phone("12345678").address("994 E South Union").role("Software Engineer").build();
 
         when(employeeService.saveUpdateEmployee(any())).thenReturn(employee);
 
@@ -53,7 +53,7 @@ public class EmployeeControllerTest {
     public void testAddEmployeeFailure(){
         log.info("In testAddEmployee Failure Controller");
         Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                .phone("12345678").address("994 E South Union").build();
+                .phone("12345678").address("994 E South Union").role("Software Engineer").build();
 
         when(employeeService.saveUpdateEmployee(any())).thenReturn(null);
 

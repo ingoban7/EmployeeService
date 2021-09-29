@@ -69,6 +69,7 @@ public class EmployeeControllerHateos {
                     employee.setEmail(newEmployee.getEmail());
                     employee.setPhone(newEmployee.getPhone());
                     employee.setAddress(newEmployee.getAddress());
+                    employee.setRole(newEmployee.getRole());
                     return employeeService.saveUpdateEmployee(employee);
                 })
                 .orElseGet(() -> {

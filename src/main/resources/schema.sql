@@ -1,11 +1,15 @@
 DROP TABLE IF EXISTS Employee;
 
-CREATE TABLE Employee (
-  id INT AUTO_INCREMENT  PRIMARY KEY,
-  first_name VARCHAR(250) NOT NULL,
-  last_name VARCHAR(250) NOT NULL,
-  short_id VARCHAR(50) NOT NULL,
-  email VARCHAR(250) NOT NULL,
-  phone VARCHAR(250) NULL,
-  address VARCHAR(500) NOT NULL
+create table Employee
+(
+	id int auto_increment,
+	last_name varchar(250) not null,
+	short_id varchar(50) not null,
+	email varchar(250) not null,
+	phone varchar(250) null,
+	address varchar(500) null,
+	first_name varchar(250) not null,
+	role varchar(250) not null,
+	constraint Employee_pk
+		primary key (id)
 );

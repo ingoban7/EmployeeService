@@ -46,9 +46,9 @@ public class EmployeeControllerHateosTest {
     public void testGetAllEmployees() throws Exception{
         when(employeeService.getAllEmployees()).thenReturn(Stream.of(
                 Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                        .phone("12345678").address("994 E South Union").build(),
+                        .phone("12345678").address("994 E South Union").role("HR").build(),
                 Employee.builder().id(2).firstName("Brian").lastName("Kobe").shortId("bkobe").email("test@gmail.com")
-                        .phone("12345678").address("994 E South Union").build())
+                        .phone("12345678").address("994 E South Union").role("Software Engineer").build())
                 .collect(Collectors.toList()));
 
         mockMvc.perform(get("/employees").accept(MediaTypes.HAL_JSON_VALUE))
@@ -59,12 +59,14 @@ public class EmployeeControllerHateosTest {
                 .andExpect(jsonPath("$._embedded.employeeList[0].firstName", is("Test")))
                 .andExpect(jsonPath("$._embedded.employeeList[0].lastName", is("Test")))
                 .andExpect(jsonPath("$._embedded.employeeList[0].email", is("abc@gmail.com")))
+                .andExpect(jsonPath("$._embedded.employeeList[0].role", is("HR")))
                 .andExpect(jsonPath("$._embedded.employeeList[0]._links.self.href", is("http://localhost/employees/1")))
                 .andExpect(jsonPath("$._embedded.employeeList[0]._links.employees.href", is("http://localhost/employees")))
                 .andExpect(jsonPath("$._embedded.employeeList[1].id", is(2)))
                 .andExpect(jsonPath("$._embedded.employeeList[1].firstName", is("Brian")))
                 .andExpect(jsonPath("$._embedded.employeeList[1].lastName", is("Kobe")))
                 .andExpect(jsonPath("$._embedded.employeeList[1].email", is("test@gmail.com")))
+                .andExpect(jsonPath("$._embedded.employeeList[1].role", is("Software Engineer")))
                 .andExpect(jsonPath("$._embedded.employeeList[1]._links.self.href", is("http://localhost/employees/2")))
                 .andExpect(jsonPath("$._embedded.employeeList[1]._links.employees.href", is("http://localhost/employees")))
                 .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees"))) //
@@ -76,7 +78,7 @@ public class EmployeeControllerHateosTest {
     public void testAddEmployeesSuccess() throws Exception{
 
         Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                .phone("12345678").address("994 E South Union").build();
+                .phone("12345678").address("994 E South Union").role("Software Engineer").build();
 
         when(employeeService.saveUpdateEmployee(any())).thenReturn(employee);
 
@@ -91,6 +93,7 @@ public class EmployeeControllerHateosTest {
                   .andExpect(jsonPath("$.firstName", is("Test")))
                   .andExpect(jsonPath("$.lastName", is("Test")))
                   .andExpect(jsonPath("$.email", is("abc@gmail.com")))
+                  .andExpect(jsonPath("$.email", is("abc@gmail.com")))
                   .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees/1")))
                   .andExpect(jsonPath("$._links.employees.href", is("http://localhost/employees")))
                   .andReturn();
@@ -100,7 +103,7 @@ public class EmployeeControllerHateosTest {
     public void testAddEmployeesFailure() throws Exception {
 
         Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                .phone("12345678").address("994 E South Union").build();
+                .phone("12345678").address("994 E South Union").role("Software Engineer").build();
 
         when(employeeService.saveUpdateEmployee(any())).thenReturn(employee);
 

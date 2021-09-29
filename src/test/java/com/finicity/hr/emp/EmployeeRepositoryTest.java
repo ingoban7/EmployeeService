@@ -12,7 +12,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class EmployeeRepositoryTest {
 
     @Autowired
@@ -20,8 +19,8 @@ public class EmployeeRepositoryTest {
 
     @Test
     public void testSaveReadDelete(){
-        Employee employee =  Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
-                .phone("12345678").address("994 E South Union").build();
+        Employee employee = Employee.builder().id(1).firstName("Test").lastName("Test").shortId("isningth").email("abc@gmail.com")
+                .phone("12345678").address("994 E South Union").role("Software Engineer").build();
 
         employeeRepository.save(employee);
         Iterable<Employee> employees = employeeRepository.findAll();

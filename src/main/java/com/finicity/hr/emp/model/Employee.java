@@ -39,4 +39,7 @@ public class Employee implements Serializable {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "role")
+    private String role;
+
 }
